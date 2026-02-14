@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Мої команди — Football Manager{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Мої футбольні команди</h1>
+    <a href="#" class="btn btn-success">+ Створити нову команду</a>
+</div>
+
+<div class="row">
+    {% for team in teams %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+            {% if team.logo %}
+                <img src="{{ team.logo.url }}" class="card-img-top" alt="{{ team.name }}" style="height: 200px; object-fit: cover;">
+            {% else %}
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <span>Немає логотипу</span>
+                </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ team.name }}</h5>
+                <p class="card-text text-muted">Місто: {{ team.city }}</p>
+                <div class="d-grid gap-2">
+                    <a href="#" class="btn btn-outline-primary">Управління гравцями</a>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Редагувати</a>
+                        <a href="#" class="btn btn-sm btn-outline-danger">Видалити</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted small">
+                Створено: {{ team.created_at|date:"d.m.Y" }}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <h3 class="text-muted">У вас поки немає жодної команди.</h3>
+        <p>Створіть свою першу команду, щоб почати роботу!</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
