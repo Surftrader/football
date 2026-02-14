@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views.generic import CreateView
+from django.contrib.auth import login
+from .forms import ManagerRegistrationForm
 
-# Create your views here.
+class RegisterView(CreateView):
+    template_name = 'registration/register.html'
+    form_class = ManagerRegistrationForm
+    success_url = '/login/'
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Here you can automatically log in a user after registration:
+        # login(self.request, self.object)
+        return response
