@@ -5,28 +5,34 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Мої футбольні команди</h1>
-    <a href="#" class="btn btn-success">+ Створити нову команду</a>
+    <a href="{% url 'team_create' %}" class="btn btn-success">+ Створити нову команду</a>
 </div>
 
 <div class="row">
     {% for team in teams %}
     <div class="col-md-4 mb-4">
         <div class="card shadow-sm h-100">
+            <div style="height: 200px; overflow: hidden; background-color: #f8f9fa;" class="d-flex align-items-center justify-content-center">
             {% if team.logo %}
-                <img src="{{ team.logo.url }}" class="card-img-top" alt="{{ team.name }}" style="height: 200px; object-fit: cover;">
+                <img src="{{ team.logo.url }}" 
+                    class="img-fluid" 
+                    alt="{{ team.name }}" 
+                    style="max-height: 100%; width: auto; object-fit: contain; padding: 10px;">
             {% else %}
-                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                <div class="text-secondary d-flex flex-column align-items-center">
+                    <i class="bi bi-shield-slash" style="font-size: 2rem;"></i>
                     <span>Немає логотипу</span>
                 </div>
             {% endif %}
+            </div>
             <div class="card-body">
                 <h5 class="card-title">{{ team.name }}</h5>
                 <p class="card-text text-muted">Місто: {{ team.city }}</p>
                 <div class="d-grid gap-2">
                     <a href="#" class="btn btn-outline-primary">Управління гравцями</a>
                     <div class="btn-group">
-                        <a href="#" class="btn btn-sm btn-outline-secondary">Редагувати</a>
-                        <a href="#" class="btn btn-sm btn-outline-danger">Видалити</a>
+                        <a href="{% url 'team_edit' team.id %}" class="btn btn-sm btn-outline-secondary">Редагувати</a>
+                        <a href="{% url 'team_delete' team.id %}" class="btn btn-sm btn-outline-danger">Видалити</a>
                     </div>
                 </div>
             </div>

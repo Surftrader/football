@@ -23,7 +23,7 @@ from users.views import RegisterView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', RegisterView.as_view(), name='register'),
-    path('', include('django.contrib.auth.urls')),
+    path('auth/', include('django.contrib.auth.urls')),
     path('', include('teams.urls')),
 ]
 
