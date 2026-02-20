@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger shadow">
+            <div class="card-body text-center">
+                <h3>Видалити гравця?</h3>
+                <p class="lead">Ви впевнені, що хочете видалити гравця <strong>{{ object.first_name }} {{ object.last_name }}</strong>?</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Підтвердити видалення</button>
+                    <a href="{% url 'player_list' object.team.id %}" class="btn btn-secondary">Скасувати</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

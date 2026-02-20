@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
@@ -46,7 +47,19 @@ class TeamDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         return Team.objects.filter(manager=self.request.user)
 
+    def dispatch(self, request, *args, **kwargs):
+        team = Team.objects.filter(pk=self.kwargs.get('pk'), manager=request.user).first()
 
+        if not team:
+            storage = messages.get_messages(request)
+            storage.used = True
+            
+            messages.error(request, "Команду не знайдено або у вас немає прав на її видалення.")
+            return redirect('index')
+
+        self.object = team
+        return super().dispatch(request, *args, **kwargs)
+    
 class PlayerListView(LoginRequiredMixin, ListView):
     model = Player
     template_name = 'teams/player_list.html'
@@ -82,3 +95,39 @@ class PlayerCreateView(LoginRequiredMixin, CreateView):
     
     def get_success_url(self):
         return reverse_lazy('player_list', kwargs={'team_id': self.kwargs.get('team_id')})
+
+
+class PlayerUpdateView(LoginRequiredMixin, UpdateView):
+    model = Player
+    form_class = PlayerForm
+    template_name = 'teams/player_form.html'
+    
+    def get_queryset(self):
+        return Player.objects.filter(team__manager=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['team'] = self.object.team
+        return context
+    
+    def get_success_url(self):
+        return reverse_lazy('player_list', kwargs={'team_id': self.object.team.id})
+
+
+class PlayerDeleteView(LoginRequiredMixin, DeleteView):
+    model = Player
+    template_name = 'teams/player_confirm_delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        player = Player.objects.filter(pk=self.kwargs.get('pk'), team__manager=request.user).first()
+
+        if not player:
+            messages.error(request, "Гравця не знайдено або у вас немає прав на його видалення.")
+            return redirect('index')
+
+        self.object = player
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('player_list', kwargs={'team_id': self.object.team.id})
+    
