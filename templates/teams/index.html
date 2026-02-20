@@ -29,7 +29,7 @@
                 <h5 class="card-title">{{ team.name }}</h5>
                 <p class="card-text text-muted">Місто: {{ team.city }}</p>
                 <div class="d-grid gap-2">
-                    <a href="#" class="btn btn-outline-primary">Управління гравцями</a>
+                    <a href="{% url 'player_list' team.id %}" class="btn btn-outline-primary">Управління гравцями</a>
                     <div class="btn-group">
                         <a href="{% url 'team_edit' team.id %}" class="btn btn-sm btn-outline-secondary">Редагувати</a>
                         <a href="{% url 'team_delete' team.id %}" class="btn btn-sm btn-outline-danger">Видалити</a>
