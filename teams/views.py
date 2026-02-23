@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.utils import timezone
 from .forms import TeamForm, PlayerForm, MatchForm
 from .models import Team, Player, Match
 
@@ -139,6 +140,11 @@ class MatchListView(LoginRequiredMixin, ListView):
     template_name = 'teams/match_list.html'
     context_object_name = 'matches'
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
+    
     def get_queryset(self):
         user_teams = Team.objects.filter(manager=self.request.user)
         return Match.objects.filter(
@@ -156,4 +162,42 @@ class MatchCreateView(LoginRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+
+class MatchUpdateView(LoginRequiredMixin, UpdateView):
+    model = Match
+    form_class = MatchForm
+    template_name = 'teams/match_form.html'
+    success_url = reverse_lazy('match_list')
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+    
+    def get_queryset(self):
+        user_teams = Team.objects.filter(manager=self.request.user)
+        return Match.objects.filter(
+                Q(home_team__in=user_teams) | Q(away_team__in=user_teams)
+            ).distinct()
+
+
+class MatchDeleteView(LoginRequiredMixin, DeleteView):
+    model = Match
+    template_name = 'teams/match_confirm_delete.html'
+    success_url = reverse_lazy('match_list')
+    
+    def dispatch(self, request, *args, **kwargs):
+        user_teams = Team.objects.filter(manager=request.user)
+        match = Match.objects.filter(
+            Q(pk=self.kwargs.get('pk')) &
+            (Q(home_team__in=user_teams) | Q(away_team__in=user_teams))
+        ).first()
+            
+        if not match:
+            messages.error(request, "Матчу не знайдено або у вас немає прав на його видалення.")
+            return redirect('match_list')
+
+        self.object = match
+        return super().dispatch(request, *args, **kwargs)
 

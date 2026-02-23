@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Видалення матчу{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-danger">
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0 h5">Підтвердження видалення</h3>
+            </div>
+            <div class="card-body text-center py-4">
+                <p class="lead">Ви дійсно хочете видалити матч?</p>
+                <div class="h4 fw-bold mb-4">
+                    {{ object.home_team.name }} vs {{ object.away_team.name }}
+                    <br>
+                    <small class="text-muted">{{ object.match_date|date:"d.m.Y H:i" }}</small>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-lg px-4 me-2">Да, видалити</button>
+                    <a href="{% url 'match_list' %}" class="btn btn-secondary btn-lg px-4">Відміна</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
