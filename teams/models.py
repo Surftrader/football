@@ -15,6 +15,10 @@ class Team(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     
+    class Meta:
+        verbose_name = "Команда"
+        verbose_name_plural = "Команди"
+    
     def __str__(self):
         return self.name
 
@@ -36,13 +40,13 @@ class Player(models.Model):
         ('MF', 'Півзахисник'),
         ('FW', 'Нападник'),
     ]
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    position = models.CharField(max_length=2, choices=POSITIONS, default='GK')
-    number = models.PositiveIntegerField()
-    birth_date = models.DateField(null=True, blank=True, validators=[validate_age])
-    is_injured = models.BooleanField(default=False)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='players')
+    first_name = models.CharField(max_length=50, verbose_name="Ім'я")
+    last_name = models.CharField(max_length=50, verbose_name="Прізвище")
+    position = models.CharField(max_length=2, choices=POSITIONS, default='GK', verbose_name="Позиція на полі")
+    number = models.PositiveIntegerField(verbose_name="Ігровий номер")
+    birth_date = models.DateField(null=True, blank=True, validators=[validate_age], verbose_name="Дата народження")
+    is_injured = models.BooleanField(default=False, verbose_name="Травмований")
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='players', verbose_name="Команда")
     
     @property
     def age(self):
@@ -51,18 +55,27 @@ class Player(models.Model):
             return today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
         return None
     
+    class Meta:
+        verbose_name = "Гравець"
+        verbose_name_plural = "Гравці"
+        ordering = ['last_name', 'first_name']
+        
     def __str__(self):
         return f"{self.first_name} {self.last_name} - ({self.team.name})"
 
 
 class Match(models.Model):
-    home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches')
+    home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches', verbose_name="Домашня команда")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_matches')
-    match_date = models.DateTimeField()
+    match_date = models.DateTimeField(verbose_name="Дата та час матчу")
     home_score = models.PositiveIntegerField(default=0)
     away_score = models.PositiveIntegerField(default=0)
     stadium = models.CharField(max_length=100)
     
+    class Meta:
+        verbose_name = "Матч"
+        verbose_name_plural = "Матчі"
+        
     def __str__(self):
         return f"{self.home_team.name} vs {self.away_team.name} on {self.match_date.strftime('%Y-%m-%d')}"
     
