@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Сторінку не знайдено{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-6 text-center">
+        <div class="display-1 fw-bold text-primary mb-3">404</div>
+        <h1 class="h2 mb-4">Ой! Сторінку не знайдено</h1>
+        <p class="lead text-muted mb-5">
+            Здається, ви ввели неправильну адресу або сторінка, яку ви шукаєте, була видалена.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'index' %}" class="btn btn-primary btn-lg px-4 gap-3">
+                <i class="bi bi-house-door"></i> На головну
+            </a>
+            <button onclick="history.back()" class="btn btn-outline-secondary btn-lg px-4">
+                Повернутися назад
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
