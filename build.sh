@@ -12,3 +12,5 @@ if [ "$DJANGO_SUPERUSER_USERNAME" ]; then
     --username $DJANGO_SUPERUSER_USERNAME \
     --email $DJANGO_SUPERUSER_EMAIL || true
 fi
+
+python3 manage.py loaddata data.json

@@ -1,0 +1,164 @@
+[
+{
+    "model": "teams.team",
+    "pk": 4,
+    "fields": {
+        "name": "Перемога",
+        "city": "Харків",
+        "logo": "team_logos/football_logo_nVqsoiD.png",
+        "manager": 2,
+        "created_at": "2026-02-18T16:12:24.858Z"
+    }
+},
+{
+    "model": "teams.team",
+    "pk": 6,
+    "fields": {
+        "name": "Перемога-3",
+        "city": "Харків",
+        "logo": "team_logos/football_logo_MzBMa2e.png",
+        "manager": 4,
+        "created_at": "2026-02-18T17:59:40.261Z"
+    }
+},
+{
+    "model": "teams.team",
+    "pk": 7,
+    "fields": {
+        "name": "Перемога-4",
+        "city": "Харків",
+        "logo": "",
+        "manager": 4,
+        "created_at": "2026-02-18T18:02:38.260Z"
+    }
+},
+{
+    "model": "teams.team",
+    "pk": 8,
+    "fields": {
+        "name": "Динамо",
+        "city": "Київ",
+        "logo": "",
+        "manager": 1,
+        "created_at": "2026-02-23T13:34:58.453Z"
+    }
+},
+{
+    "model": "teams.team",
+    "pk": 9,
+    "fields": {
+        "name": "Шахтар",
+        "city": "Донецьк",
+        "logo": "",
+        "manager": 1,
+        "created_at": "2026-02-23T13:35:05.141Z"
+    }
+},
+{
+    "model": "teams.player",
+    "pk": 2,
+    "fields": {
+        "first_name": "Поддубка",
+        "last_name": "Сергій",
+        "position": "DF",
+        "number": 25,
+        "birth_date": "1974-10-25",
+        "is_injured": false,
+        "team": 6
+    }
+},
+{
+    "model": "teams.player",
+    "pk": 3,
+    "fields": {
+        "first_name": "Поддубка",
+        "last_name": "Богдан",
+        "position": "FW",
+        "number": 21,
+        "birth_date": "2010-09-21",
+        "is_injured": false,
+        "team": 6
+    }
+},
+{
+    "model": "teams.match",
+    "pk": 1,
+    "fields": {
+        "home_team": 8,
+        "away_team": 9,
+        "match_date": "2026-02-21T13:35:17.207Z",
+        "home_score": 2,
+        "away_score": 1,
+        "stadium": "Олімпійський"
+    }
+},
+{
+    "model": "teams.match",
+    "pk": 2,
+    "fields": {
+        "home_team": 9,
+        "away_team": 8,
+        "match_date": "2026-02-28T13:35:17.351Z",
+        "home_score": 0,
+        "away_score": 0,
+        "stadium": "Донбас Арена"
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$kryejocL8oQjlojM3gXY7u$sJ4+nx1/m0sdxa7F7yEt8R1a0S/PT/D70m2g3h5b1Pg=",
+        "last_login": "2026-02-20T14:08:40.991Z",
+        "is_superuser": false,
+        "username": "Newuser",
+        "first_name": "New",
+        "last_name": "User",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-02-17T14:06:04.553Z",
+        "email": "new_user@gmail.com",
+        "role": "manager",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$BG635rZuYNKB7ePiOAE9Cl$wgurVqqsOKkbl7DjcnxWjrk4y28qTJW8KsAbkrFnoA4=",
+        "last_login": "2026-02-18T17:24:28.638Z",
+        "is_superuser": false,
+        "username": "Newuser2",
+        "first_name": "New",
+        "last_name": "User",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-02-18T17:23:38.321Z",
+        "email": "user2@gmail.com",
+        "role": "manager",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$Nj3TG1RYiFGM8eH1dpO6Ef$LgEn8dIflJZm2q2Zibcc0FoONQgzkLnlET3hgliQup8=",
+        "last_login": "2026-02-23T13:38:31.005Z",
+        "is_superuser": false,
+        "username": "Newuser3",
+        "first_name": "New",
+        "last_name": "User3",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-02-18T17:58:45.520Z",
+        "email": "user3@gmail.com",
+        "role": "manager",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
