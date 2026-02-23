@@ -4,8 +4,9 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
-from .forms import TeamForm, PlayerForm
-from .models import Team, Player
+from django.db.models import Q
+from .forms import TeamForm, PlayerForm, MatchForm
+from .models import Team, Player, Match
 
 
 class TeamListView(LoginRequiredMixin, ListView):
@@ -131,3 +132,28 @@ class PlayerDeleteView(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('player_list', kwargs={'team_id': self.object.team.id})
     
+
+
+class MatchListView(LoginRequiredMixin, ListView):
+    model = Match
+    template_name = 'teams/match_list.html'
+    context_object_name = 'matches'
+    
+    def get_queryset(self):
+        user_teams = Team.objects.filter(manager=self.request.user)
+        return Match.objects.filter(
+                Q(home_team__in=user_teams) | Q(away_team__in=user_teams)
+            ).order_by('-match_date')
+
+
+class MatchCreateView(LoginRequiredMixin, CreateView):
+    model = Match
+    form_class = MatchForm
+    template_name = 'teams/match_form.html'
+    success_url = reverse_lazy('match_list')
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
