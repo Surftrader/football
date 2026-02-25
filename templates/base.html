@@ -29,6 +29,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'match_list' %}">Матчі</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'league_table' %}">Турнирная таблица</a>
+                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}

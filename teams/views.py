@@ -4,10 +4,11 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
-from django.db.models import Q
+from django.db.models import Q, Count, F
 from django.utils import timezone
 from .forms import TeamForm, PlayerForm, MatchForm
 from .models import Team, Player, Match
+from django.contrib.auth.decorators import login_required
 
 
 class TeamListView(LoginRequiredMixin, ListView):
@@ -200,4 +201,35 @@ class MatchDeleteView(LoginRequiredMixin, DeleteView):
 
         self.object = match
         return super().dispatch(request, *args, **kwargs)
+
+
+class LeagueTableView(LoginRequiredMixin, ListView):
+    model = Team
+    template_name = 'teams/table.html'
+    context_object_name = 'teams'
+    
+    
+    def get_queryset(self):
+        played = Q(home_matches__home_score__isnull=False)
+        played_away = Q(away_matches__home_score__isnull=False)
+    
+        return Team.objects.filter(manager=self.request.user).annotate(
+            games_played=(
+            Count('home_matches', filter=played, distinct=True) + 
+            Count('away_matches', filter=played_away, distinct=True)
+            ),
+            wins=(
+            Count('home_matches', filter=played & Q(home_matches__home_score__gt=F('home_matches__away_score'))) +
+            Count('away_matches', filter=played_away & Q(away_matches__away_score__gt=F('away_matches__home_score')))
+        ),
+        draws=(
+            Count('home_matches', filter=played & Q(home_matches__home_score=F('home_matches__away_score'))) +
+            Count('away_matches', filter=played_away & Q(away_matches__away_score=F('away_matches__home_score')))
+        ),
+        losses=(
+            Count('home_matches', filter=played & Q(home_matches__home_score__lt=F('home_matches__away_score'))) +
+            Count('away_matches', filter=played_away & Q(away_matches__away_score__lt=F('away_matches__home_score')))
+        ),
+        points=F('wins') * 3 + F('draws') * 1
+    ).order_by('-points', '-wins', 'name')
 

@@ -68,8 +68,16 @@ class Match(models.Model):
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches', verbose_name="Домашня команда")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_matches')
     match_date = models.DateTimeField(verbose_name="Дата та час матчу")
-    home_score = models.PositiveIntegerField(default=0)
-    away_score = models.PositiveIntegerField(default=0)
+    home_score = models.PositiveIntegerField(
+        verbose_name="Голи домашньої команди",
+        null=True,
+        blank=True
+        )
+    away_score = models.PositiveIntegerField(
+        verbose_name="Голи гостьової команди",
+        null=True, 
+        blank=True
+    )
     stadium = models.CharField(max_length=100)
     
     class Meta:

@@ -48,7 +48,7 @@
 
                             <div class="col-2 px-0">
                                 <div class="display-6 fw-bold text-primary">
-                                    {% if match.match_date < now or match.home_score > 0 or match.away_score > 0 %}
+                                    {% if match.home_score is not None %}
                                         {{ match.home_score }}:{{ match.away_score }}
                                     {% else %}
                                         <small class="text-muted" style="font-size: 1.2rem;">VS</small>

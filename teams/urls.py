@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import TeamListView, TeamCreateView, TeamUpdateView, \
-    TeamDeleteView, PlayerListView, PlayerCreateView, PlayerUpdateView, \
-        PlayerDeleteView, MatchListView, MatchCreateView, MatchUpdateView, \
-            MatchDeleteView
+from .views import (TeamListView, TeamCreateView, TeamUpdateView,
+    TeamDeleteView, PlayerListView, PlayerCreateView, PlayerUpdateView,
+        PlayerDeleteView, MatchListView, MatchCreateView, MatchUpdateView,
+            MatchDeleteView, LeagueTableView)
 
 urlpatterns = [
     path('', TeamListView.as_view(), name='index'),
@@ -17,4 +17,5 @@ urlpatterns = [
     path('matches/add/', MatchCreateView.as_view(), name='match_create'),
     path('matches/<int:pk>/edit/', MatchUpdateView.as_view(), name='match_edit'),
     path('matches/<int:pk>/delete/', MatchDeleteView.as_view(), name='match_delete'),
+    path('table/', LeagueTableView.as_view(), name='league_table'),
 ]
