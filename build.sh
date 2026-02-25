@@ -4,7 +4,7 @@ set -o errexit
 pip install -r requirements.txt
 python3 manage.py collectstatic --no-input
 python3 manage.py migrate
-
+ 
 # Автоматичне створення адміна, якщо його немає
 if [ "$DJANGO_SUPERUSER_USERNAME" ]; then
   python3 manage.py createsuperuser \
